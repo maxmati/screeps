@@ -38,7 +38,7 @@ module.exports = {
        }
 
      return minKey;
-   }
+   },
    notFullSpawn: function (room) {
      var extensions = room.find(FIND_MY_STRUCTURES,	{filter: function (struct) {
        return struct.structureType === STRUCTURE_EXTENSION && struct.energy < struct.energyCapacity;
