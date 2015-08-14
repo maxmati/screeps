@@ -24,5 +24,13 @@ module.exports = {
 
      if (!spawns) return null;
      else return spawns[0];
+   },
+   spawnWithEnergy: function (energy) {
+     var spawns = _.filter(Game.spawns, function (spawn) {
+          return spawn.energy >= energy;
+     });
+
+     if (!spawns) return null;
+     else return spawns[0];
    }
 }

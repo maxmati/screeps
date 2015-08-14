@@ -2,8 +2,8 @@ var util = require("util");
 
 module.exports = {
   miner: {
-    amount: 1,
-    body: [MOVE, WORK],
+    amount: 6,
+    body: [MOVE, WORK, WORK],
     action: function (creep) {
       var source = creep.room.find(FIND_SOURCES_ACTIVE)[0];
       if (source) {
@@ -16,8 +16,9 @@ module.exports = {
     }
   },
   carrier: {
-    amount: 1,
-    body: [MOVE, CARRY],
+    amount: 3,
+    body: [MOVE, CARRY, CARRY, CARRY, CARRY, MOVE],
+    // body: [MOVE, CARRY],
     action: function(creep) {
 
       if(creep.memory.state == "grab") {
@@ -45,5 +46,6 @@ module.exports = {
       role: "carrier",
       state: "grab"
     }
-  }
+  },
+  builder: require('builder')
 }

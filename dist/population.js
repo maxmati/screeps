@@ -12,7 +12,6 @@ module.exports = function() {
             var spawn = util.idleSpawn();
             if (spawn) {
                 var newName = spawn.createCreep(roles[role].body, undefined, roles[role].init);
-                // if (typeof(newName) == "string") roles[role].init(Game.creeps[newName]);
             } else break;
         }
     }
