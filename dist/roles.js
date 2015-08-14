@@ -3,7 +3,8 @@ var util = require("util");
 module.exports = {
   miner: {
     amount: function () {
-      if(Memory.stage >= 5) return 3;
+      if(Memory.stage >= 5) return 6;
+      if(Memory.stage >= 4) return 8;
       if(Memory.stage >= 3) return 6;
       if(Memory.stage >= 2) return 3;
       if(Memory.stage >= 1) return 1;
@@ -16,7 +17,7 @@ module.exports = {
     action: function (creep) {
       var source = creep.room.find(FIND_SOURCES_ACTIVE)[0];
       if (source) {
-          creep.moveTo(source);
+          creep.moveByHeart(source);
           creep.harvest(source);
       }
     },
@@ -26,7 +27,6 @@ module.exports = {
   },
   carrier: {
     amount: function () {
-      if(Memory.stage >= 5) return 2;
       if(Memory.stage >= 3) return 4;
       if(Memory.stage >= 2) return 2;
       if(Memory.stage >= 1) return 1;
@@ -41,16 +41,16 @@ module.exports = {
       if(creep.memory.state == "grab") {
         var energy = creep.room.find(FIND_DROPPED_ENERGY)[0];
         if(energy){
-          creep.moveTo(energy);
+          creep.moveByHeart(energy);
           creep.pickup(energy);
         }
 
         if(creep.carry.energy >= creep.carryCapacity)
           creep.memory.state = "put";
       } else if (creep.memory.state == "put") {
-        var spawn = util.notFullSpawn();
+        var spawn = util.notFullSpawn(creep.room);
         if(spawn){
-          creep.moveTo(spawn);
+          creep.moveByHeart(spawn);
           creep.transferEnergy(spawn)
         }
         if(creep.carry.energy == 0)
@@ -67,7 +67,7 @@ module.exports = {
   builder: require('builder'),
   controller: {
     amount: function () {
-      if(Memory.stage >= 4) return 8;
+      if(Memory.stage >= 4) return 6;
       if(Memory.stage >= 3) return 4;
       return 0;
     },
@@ -79,30 +79,24 @@ module.exports = {
       if(creep.memory.state == "get"){
         var spawn = util.spawnWithEnergy(creep.carryCapacity);
         if(spawn){
-          if(!creep.memory.path)
-            creep.memory.path = creep.pos.findPathTo(spawn);
-          creep.moveByPath(creep.memory.path);
+          creep.moveByHeart(spawn)
 
           spawn.transferEnergy(creep);
         }
         if(creep.carry.energy >= creep.carryCapacity){
           creep.memory.state = "upgrade";
-          creep.memory.path = null;
         }
       }
 
       if(creep.memory.state == "upgrade"){
         var target = creep.room.controller;
 
-        if(!creep.memory.path)
-          creep.memory.path = creep.pos.findPathTo(target);
-        creep.moveByPath(creep.memory.path);
+        creep.moveByHeart(target);
 
         creep.upgradeController(target)
 
         if(creep.carry.energy == 0){
           creep.memory.state = "get";
-          creep.memory.path = null;
         }
       }
 

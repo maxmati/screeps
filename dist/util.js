@@ -16,7 +16,12 @@ module.exports = {
 
        return spawns
    },
-   notFullSpawn: function () {
+   notFullSpawn: function (room) {
+     var extensions = room.find(FIND_MY_STRUCTURES,	{filter: function (struct) {
+       return struct.structureType === STRUCTURE_EXTENSION && struct.energy < struct.energyCapacity;
+     }});
+     if(extensions.length) return extensions[0];
+
      var spawns = _.filter(Game.spawns, function (spawn) {
           return spawn.energy < spawn.energyCapacity;
      });

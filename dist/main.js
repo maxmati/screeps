@@ -1,3 +1,5 @@
+require("superCreeps");
+
 var population = require("population");
 population();
 

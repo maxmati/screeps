@@ -13,7 +13,6 @@ module.exports = function() {
         for (var i = 0; i < delta; i++) {
             if (currentSpawn < spawns.length) {
                 var newName = spawns[currentSpawn++].createCreep(roles[role].body(), undefined, roles[role].init);
-                console.log(newName);
             } else break;
         }
 

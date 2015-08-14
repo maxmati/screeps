@@ -14,10 +14,7 @@ module.exports = {
     if(creep.memory.state == "get"){
       var spawn = util.spawnWithEnergy(creep.carryCapacity);
       if(spawn){
-        if(!creep.memory.path)
-          creep.memory.path = creep.pos.findPathTo(spawn);
-        creep.moveByPath(creep.memory.path);
-
+        creep.moveByHeart(spawn);
         spawn.transferEnergy(creep);
       }
       if(creep.carry.energy >= creep.carryCapacity){
@@ -35,9 +32,8 @@ module.exports = {
       }
 
       if(target) {
-        if(!creep.memory.path)
-          creep.memory.path = creep.pos.findPathTo(target);
-        creep.moveByPath(creep.memory.path);
+
+        creep.moveByHeart(target);
 
         creep.build(target)
       }
