@@ -9,13 +9,12 @@ module.exports = {
    countCreeps: function(role) {
        return this.creepsByRole(role).length;
    },
-   idleSpawn: function() {
+   idleSpawns: function() {
        var spawns = _.filter(Game.spawns, function(spawn) {
            return !spawn.spawning;
        });
 
-       if (!spawns) return null;
-       else return spawns[0];
+       return spawns
    },
    notFullSpawn: function () {
      var spawns = _.filter(Game.spawns, function (spawn) {

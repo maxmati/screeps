@@ -2,18 +2,22 @@ var util = require("util");
 var roles = require("roles");
 
 module.exports = function() {
+    var spawns = util.idleSpawns();
+    var currentSpawn = 0;
 
     for (var role in roles) {
-        var delta = roles[role].amount - util.countCreeps(role);
+        var delta = roles[role].amount() - util.countCreeps(role);
 
         if (delta < 1) continue;
 
         for (var i = 0; i < delta; i++) {
-            var spawn = util.idleSpawn();
-            if (spawn) {
-                var newName = spawn.createCreep(roles[role].body, undefined, roles[role].init);
+            if (currentSpawn < spawns.length) {
+                var newName = spawns[currentSpawn++].createCreep(roles[role].body(), undefined, roles[role].init);
+                console.log(newName);
             } else break;
         }
+
+        if(currentSpawn >= spawns.length) break
     }
 
     for (var creepName in Game.creeps) {

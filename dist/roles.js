@@ -2,8 +2,17 @@ var util = require("util");
 
 module.exports = {
   miner: {
-    amount: 6,
-    body: [MOVE, WORK, WORK],
+    amount: function () {
+      if(Memory.stage >= 5) return 3;
+      if(Memory.stage >= 3) return 6;
+      if(Memory.stage >= 2) return 3;
+      if(Memory.stage >= 1) return 1;
+    },
+    body: function () {
+      if(Memory.stage >= 5) return [MOVE, WORK, WORK, WORK, WORK, WORK];
+      if(Memory.stage >= 2) return [MOVE, WORK, WORK];
+      if(Memory.stage >= 1) return [MOVE, WORK];
+    },
     action: function (creep) {
       var source = creep.room.find(FIND_SOURCES_ACTIVE)[0];
       if (source) {
@@ -16,9 +25,17 @@ module.exports = {
     }
   },
   carrier: {
-    amount: 3,
-    body: [MOVE, CARRY, CARRY, CARRY, CARRY, MOVE],
-    // body: [MOVE, CARRY],
+    amount: function () {
+      if(Memory.stage >= 5) return 2;
+      if(Memory.stage >= 3) return 4;
+      if(Memory.stage >= 2) return 2;
+      if(Memory.stage >= 1) return 1;
+    },
+    body: function () {
+      if(Memory.stage >= 5) return [MOVE, CARRY, CARRY, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, MOVE, MOVE];
+      if(Memory.stage >= 2) return [MOVE, CARRY, CARRY, CARRY, CARRY, MOVE];
+      if(Memory.stage >= 1) return [MOVE, CARRY, CARRY];
+    },
     action: function(creep) {
 
       if(creep.memory.state == "grab") {
@@ -49,8 +66,15 @@ module.exports = {
   },
   builder: require('builder'),
   controller: {
-    amount: 1,
-    body: [MOVE, CARRY, WORK],
+    amount: function () {
+      if(Memory.stage >= 4) return 8;
+      if(Memory.stage >= 3) return 4;
+      return 0;
+    },
+    body: function () {
+      if(Memory.stage >= 5) return [MOVE, CARRY, WORK, WORK, CARRY, WORK, MOVE];
+      return [MOVE, CARRY, WORK, WORK];
+    },
     action: function (creep) {
       if(creep.memory.state == "get"){
         var spawn = util.spawnWithEnergy(creep.carryCapacity);

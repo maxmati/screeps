@@ -1,8 +1,14 @@
 var util = require("util");
 
 module.exports = {
-  amount: 3,
-  body: [MOVE, CARRY, WORK, CARRY, MOVE],
+  amount: function () {
+    if(Memory.stage >= 4) return 4;
+    return 0;
+  },
+  body: function () {
+    if(Memory.stage >= 5) return [MOVE, CARRY, WORK, CARRY, MOVE, WORK, CARRY, CARRY, MOVE];
+    return [MOVE, CARRY, WORK, CARRY, MOVE];
+  },
   action: function (creep) {
 
     if(creep.memory.state == "get"){
