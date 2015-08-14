@@ -3,8 +3,6 @@ var util = require("util");
 module.exports = {
   miner: {
     amount: function () {
-      if(Memory.stage >= 5) return 6;
-      if(Memory.stage >= 4) return 8;
       if(Memory.stage >= 3) return 6;
       if(Memory.stage >= 2) return 3;
       if(Memory.stage >= 1) return 1;
@@ -15,7 +13,11 @@ module.exports = {
       if(Memory.stage >= 1) return [MOVE, WORK];
     },
     action: function (creep) {
-      var source = creep.room.find(FIND_SOURCES_ACTIVE)[0];
+      if(!creep.memory.workingAt){
+        creep.memory.workingAt = getLeastOccupiedSource("miner");
+      }
+      var source = Game.getObjectById(creep.memory.workingAt);
+
       if (source) {
           creep.moveByHeart(source);
           creep.harvest(source);

@@ -2,6 +2,7 @@ var util = require("util");
 
 module.exports = {
   amount: function () {
+    if(Memory.stage >= 5) return 2;
     if(Memory.stage >= 4) return 4;
     return 0;
   },

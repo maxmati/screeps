@@ -16,6 +16,29 @@ module.exports = {
 
        return spawns
    },
+   getLeastOccupiedSource: function (role) {
+     var sources = creep.room.find(FIND_SOURCES);
+     var creeps = util.creepsByRole(role)
+     var counters = {};
+
+     for(var source in sources)
+       counters[sources[source].id] = 0;
+
+     for(var creep in creeps)
+       if(creeps[creep].memory.workingAt)
+         counters[creeps[creep].memory.workingAt]++;
+
+     var minKey = sources[0].id;
+     var minVal = counters[sources[0].id];
+
+     for(var counter in counters)
+       if(counters[counter]<minVal){
+         minKey = counter;
+         minVal = counters[counter];
+       }
+
+     return minKey;
+   }
    notFullSpawn: function (room) {
      var extensions = room.find(FIND_MY_STRUCTURES,	{filter: function (struct) {
        return struct.structureType === STRUCTURE_EXTENSION && struct.energy < struct.energyCapacity;
