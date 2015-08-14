@@ -1,7 +1,8 @@
 Creep.prototype.moveByHeart = function(dst) {
-  if(!this.memory.path || this.memory.dst != dst.id){
+  if(!this.memory.path || this.memory.dst != dst.id || ( Game.time - this.memory.pathBorn > 30 ) ){
     this.memory.dst = dst.id;
     this.memory.path = this.pos.findPathTo(dst);
+    this.memory.pathBorn = Game.time;
   }
   var error = this.moveByPath(this.memory.path);
   if(error != OK && error != ERR_TIRED)

@@ -29,7 +29,7 @@ module.exports = {
   },
   carrier: {
     amount: function () {
-      if(Memory.stage >= 3) return 4;
+      if(Memory.stage >= 3) return 6;
       if(Memory.stage >= 2) return 2;
       if(Memory.stage >= 1) return 1;
     },
