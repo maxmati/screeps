@@ -47,5 +47,45 @@ module.exports = {
       state: "grab"
     }
   },
-  builder: require('builder')
+  builder: require('builder'),
+  controller: {
+    amount: 1,
+    body: [MOVE, CARRY, WORK],
+    action: function (creep) {
+      if(creep.memory.state == "get"){
+        var spawn = util.spawnWithEnergy(creep.carryCapacity);
+        if(spawn){
+          if(!creep.memory.path)
+            creep.memory.path = creep.pos.findPathTo(spawn);
+          creep.moveByPath(creep.memory.path);
+
+          spawn.transferEnergy(creep);
+        }
+        if(creep.carry.energy >= creep.carryCapacity){
+          creep.memory.state = "upgrade";
+          creep.memory.path = null;
+        }
+      }
+
+      if(creep.memory.state == "upgrade"){
+        var target = creep.room.controller;
+
+        if(!creep.memory.path)
+          creep.memory.path = creep.pos.findPathTo(target);
+        creep.moveByPath(creep.memory.path);
+
+        creep.upgradeController(target)
+
+        if(creep.carry.energy == 0){
+          creep.memory.state = "get";
+          creep.memory.path = null;
+        }
+      }
+
+    },
+    init: {
+      role: "controller",
+      state: "get"
+    }
+  }
 }
