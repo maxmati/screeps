@@ -29,7 +29,7 @@ module.exports = {
   },
   carrier: {
     amount: function () {
-      if(Memory.stage >= 3) return 6;
+      if(Memory.stage >= 3) return 8;
       if(Memory.stage >= 2) return 2;
       if(Memory.stage >= 1) return 1;
     },
@@ -69,6 +69,7 @@ module.exports = {
   builder: require('builder'),
   controller: {
     amount: function () {
+      if(Memory.stage >= 5) return 8;
       if(Memory.stage >= 4) return 6;
       if(Memory.stage >= 3) return 4;
       return 0;

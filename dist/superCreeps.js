@@ -1,5 +1,7 @@
-Creep.prototype.moveByHeart = function(dst) {
-  if(!this.memory.path || this.memory.dst != dst.id || ( Game.time - this.memory.pathBorn > 30 ) ){
+Creep.prototype.moveByHeart = function(dst, rebuild) {
+  if (typeof(rebuild)==='undefined') rebuild = true;
+
+  if(!this.memory.path || this.memory.dst != dst.id || ( (Game.time - this.memory.pathBorn > 30 ) && rebuild ) ){
     this.memory.dst = dst.id;
     this.memory.path = this.pos.findPathTo(dst);
     this.memory.pathBorn = Game.time;

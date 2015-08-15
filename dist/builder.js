@@ -37,6 +37,8 @@ module.exports = {
         creep.moveByHeart(target);
 
         creep.build(target)
+      }else {
+        util.flag(creep);
       }
 
       if(creep.carry.energy == 0){

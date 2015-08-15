@@ -64,17 +64,16 @@ module.exports = {
         return haystack.indexOf(needle) >= 0;
     },
    flag: function(creep) {
-     var flag = creep.pos.findNearest(Game.FLAGS, {
+     var self = this;
+     var flags = creep.room.find(FIND_FLAGS, {
          filter: function(flag) {
-             return this.contains(flag.name, creep.memory.role) || util.contains(flag.name, "ALL");
+           return self.contains(flag.name, creep.memory.role) || self.contains(flag.name, "ALL");
          }
      });
 
-     if (flag) {
-         creep.moveByHeart(flag);
+
+     if (flags.length) {
+         creep.moveByHeart(flags[0], false);
      }
-  },
-  contains: function(haystack, needle) {
-        return haystack.indexOf(needle) >= 0;
   }
 }
