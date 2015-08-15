@@ -14,7 +14,7 @@ module.exports = {
     },
     action: function (creep) {
       if(!creep.memory.workingAt){
-        creep.memory.workingAt = utils.getLeastOccupiedSource("miner");
+        creep.memory.workingAt = util.getLeastOccupiedSource("miner", creep.room);
       }
       var source = Game.getObjectById(creep.memory.workingAt);
 

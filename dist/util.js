@@ -5,20 +5,20 @@ module.exports = {
        return _.filter(Game.creeps, function(creep) {
            return creep.memory.role == role;
        });
-   },
-   countCreeps: function(role) {
+  },
+  countCreeps: function(role) {
        return this.creepsByRole(role).length;
-   },
-   idleSpawns: function() {
+  },
+  idleSpawns: function() {
        var spawns = _.filter(Game.spawns, function(spawn) {
            return !spawn.spawning;
        });
 
        return spawns
-   },
-   getLeastOccupiedSource: function (role) {
-     var sources = creep.room.find(FIND_SOURCES);
-     var creeps = util.creepsByRole(role)
+  },
+  getLeastOccupiedSource: function (role, room) {
+     var sources = room.find(FIND_SOURCES);
+     var creeps = this.creepsByRole(role)
      var counters = {};
 
      for(var source in sources)
@@ -59,5 +59,22 @@ module.exports = {
 
      if (!spawns) return null;
      else return spawns[0];
-   }
+   },
+   contains: function(haystack, needle) {
+        return haystack.indexOf(needle) >= 0;
+    },
+   flag: function(creep) {
+     var flag = creep.pos.findNearest(Game.FLAGS, {
+         filter: function(flag) {
+             return this.contains(flag.name, creep.memory.role) || util.contains(flag.name, "ALL");
+         }
+     });
+
+     if (flag) {
+         creep.moveByHeart(flag);
+     }
+  },
+  contains: function(haystack, needle) {
+        return haystack.indexOf(needle) >= 0;
+  }
 }
