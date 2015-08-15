@@ -11,6 +11,11 @@ Creep.prototype.moveByHeart = function(dst, rebuild) {
     this.clearPath();
 };
 
+Creep.prototype.continueMove = function() {
+  if(this.memory.path)
+    this.moveByPath(this.memory.path);
+}
+
 Creep.prototype.clearPath = function(dst) {
   this.memory.path = null;
 };

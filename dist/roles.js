@@ -31,7 +31,7 @@ module.exports = {
   },
   carrier: {
     amount: function () {
-      if(Memory.stage >= 7) return 6;
+      if(Memory.stage >= 7) return 4;
       if(Memory.stage >= 3) return 8;
       if(Memory.stage >= 2) return 2;
       if(Memory.stage >= 1) return 1;
@@ -95,6 +95,8 @@ module.exports = {
           creep.moveByHeart(spawn)
 
           spawn.transferEnergy(creep);
+        } else {
+          creep.continueMove();
         }
         if(creep.carry.energy >= creep.carryCapacity){
           creep.memory.state = "upgrade";
@@ -121,7 +123,7 @@ module.exports = {
   },
   repairer: {
     amount: function () {
-      if(Memory.stage >= 7) return 3;
+      if(Memory.stage >= 7) return 2;
       return 0;
     },
     body: function () {
@@ -130,7 +132,7 @@ module.exports = {
     },
     action: function (creep) {
       if(creep.memory.state == "get"){
-        var spawn = util.spawnWithEnergy(creep.carryCapacity);
+        var spawn = util.spawnWithEnergy(creep.carryCapacity/2);
         if(spawn){
           creep.moveByHeart(spawn);
           spawn.transferEnergy(creep);
@@ -141,18 +143,29 @@ module.exports = {
       }
       if(creep.memory.state === "repair"){
         var target = Game.getObjectById(creep.memory.workingAt);
+
+        if(target && util.structIsFull(target)){
+          target = null;
+          creep.memory.workingAt = null;
+        }
         if(!target){
           var target = util.getClosestRepair(creep);
           if(target)
             creep.memory.workingAt = target.id;
         }
 
+
         if(target) {
           creep.moveByHeart(target);
-          creep.build(target)
+          creep.repair(target)
         }else {
           util.flag(creep);
         }
+
+        if(creep.carry.energy === 0){
+          creep.memory.state = "get";
+        }
+
       }
 
 
