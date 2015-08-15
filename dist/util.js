@@ -75,5 +75,10 @@ module.exports = {
      if (flags.length) {
          creep.moveByHeart(flags[0], false);
      }
+  },
+  getClosestRepair: function (creep) {
+    return creep.pos.findClosest(FIND_MY_STRUCTURES, {filter: function (struct) {
+      return struct.hits < struct.hitsMax / 2;
+    }})
   }
 }

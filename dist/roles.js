@@ -58,7 +58,7 @@ module.exports = {
         if(spawn){
           creep.moveByHeart(spawn);
           creep.transferEnergy(spawn)
-        }else if(creep.carry.energy < creep.carryCapacity) {
+        }else if(creep.carry.energy < creep.carryCapacity/4) {
           creep.memory.state = "grab";
         }else {
           util.flag(creep);
@@ -118,5 +118,49 @@ module.exports = {
       role: "controller",
       state: "get"
     }
+  },
+  repairer: {
+    amount: function () {
+      if(Memory.stage >= 7) return 3;
+      return 0;
+    },
+    body: function () {
+      if(Memory.stage >= 7) return [MOVE, CARRY, WORK, WORK, CARRY, WORK, MOVE, WORK, MOVE];
+      return [];
+    },
+    action: function (creep) {
+      if(creep.memory.state == "get"){
+        var spawn = util.spawnWithEnergy(creep.carryCapacity);
+        if(spawn){
+          creep.moveByHeart(spawn);
+          spawn.transferEnergy(creep);
+        }
+        if(creep.carry.energy >= creep.carryCapacity){
+          creep.memory.state = "repair";
+        }
+      }
+      if(creep.memory.state === "repair"){
+        var target = Game.getObjectById(creep.memory.workingAt);
+        if(!target){
+          var target = util.getClosestRepair(creep);
+          if(target)
+            creep.memory.workingAt = target.id;
+        }
+
+        if(target) {
+          creep.moveByHeart(target);
+          creep.build(target)
+        }else {
+          util.flag(creep);
+        }
+      }
+
+
+    },
+    init: {
+      role: "repairer",
+      state: "get"
+    }
+
   }
 }

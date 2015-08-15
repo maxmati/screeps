@@ -15,7 +15,7 @@ module.exports = {
   action: function (creep) {
 
     if(creep.memory.state == "get"){
-      var spawn = util.spawnWithEnergy(creep.carryCapacity);
+      var spawn = util.spawnWithEnergy(creep.carryCapacity/4);
       if(spawn){
         creep.moveByHeart(spawn);
         spawn.transferEnergy(creep);
