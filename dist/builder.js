@@ -2,11 +2,13 @@ var util = require("util");
 
 module.exports = {
   amount: function () {
-    if(Memory.stage >= 5) return 2;
+    if(Memory.stage >= 6) return 4;
+    if(Memory.stage >= 5) return 1;
     if(Memory.stage >= 4) return 4;
     return 0;
   },
   body: function () {
+    if(Memory.stage >= 7) return [MOVE, CARRY, WORK, CARRY, MOVE, WORK, CARRY, CARRY, MOVE, WORK, CARRY, MOVE, MOVE];
     if(Memory.stage >= 5) return [MOVE, CARRY, WORK, CARRY, MOVE, WORK, CARRY, CARRY, MOVE];
     return [MOVE, CARRY, WORK, CARRY, MOVE];
   },

@@ -3,11 +3,13 @@ var util = require("util");
 module.exports = {
   miner: {
     amount: function () {
-      if(Memory.stage >= 3) return 6;
+      if(Memory.stage >= 7) return 2;
+      if(Memory.stage >= 3) return 4;
       if(Memory.stage >= 2) return 3;
       if(Memory.stage >= 1) return 1;
     },
     body: function () {
+      if(Memory.stage >= 7) return [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK];
       if(Memory.stage >= 5) return [MOVE, WORK, WORK, WORK, WORK, WORK];
       if(Memory.stage >= 2) return [MOVE, WORK, WORK];
       if(Memory.stage >= 1) return [MOVE, WORK];
@@ -29,11 +31,13 @@ module.exports = {
   },
   carrier: {
     amount: function () {
+      if(Memory.stage >= 7) return 6;
       if(Memory.stage >= 3) return 8;
       if(Memory.stage >= 2) return 2;
       if(Memory.stage >= 1) return 1;
     },
     body: function () {
+      if(Memory.stage >= 7) return [MOVE, CARRY, CARRY, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, MOVE, MOVE, CARRY, CARRY, MOVE, MOVE, MOVE];
       if(Memory.stage >= 5) return [MOVE, CARRY, CARRY, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, MOVE, MOVE];
       if(Memory.stage >= 2) return [MOVE, CARRY, CARRY, CARRY, CARRY, MOVE];
       if(Memory.stage >= 1) return [MOVE, CARRY, CARRY];
@@ -54,6 +58,10 @@ module.exports = {
         if(spawn){
           creep.moveByHeart(spawn);
           creep.transferEnergy(spawn)
+        }else if(creep.carry.energy < creep.carryCapacity) {
+          creep.memory.state = "grab";
+        }else {
+          util.flag(creep);
         }
         if(creep.carry.energy == 0)
           creep.memory.state = "grab";
@@ -69,12 +77,14 @@ module.exports = {
   builder: require('builder'),
   controller: {
     amount: function () {
+      if(Memory.stage >= 7) return 6;
       if(Memory.stage >= 5) return 8;
       if(Memory.stage >= 4) return 6;
       if(Memory.stage >= 3) return 4;
       return 0;
     },
     body: function () {
+      if(Memory.stage >= 7) return [MOVE, CARRY, WORK, WORK, CARRY, WORK, MOVE, WORK, WORK];
       if(Memory.stage >= 5) return [MOVE, CARRY, WORK, WORK, CARRY, WORK, MOVE];
       return [MOVE, CARRY, WORK, WORK];
     },
