@@ -14,7 +14,7 @@ module.exports = function() {
         if (currentSpawn < spawns.length) {
           var newName;
           for(var j = 0; j < roles[role].amount(); j++){
-            newName = spawns[currentSpawn].room.name + '.' + role + '.' + j;
+            newName = spawns[currentSpawn].room.name + '-' + role + '-' + j;
             if(Game.creeps[newName] == undefined) break;
           }
           spawns[currentSpawn++].createCreep(roles[role].body(),newName, roles[role].init);

@@ -45,7 +45,12 @@ module.exports = {
     action: function(creep) {
 
       if(creep.memory.state == "grab") {
-        var energy = creep.room.find(FIND_DROPPED_ENERGY)[0];
+        if(!creep.memory.workingAt){
+          creep.memory.workingAt = util.getLeastOccupiedSource("miner", creep.room);
+        }
+        var source = Game.getObjectById(creep.memory.workingAt);
+        var energy = source.pos.findInRange(FIND_DROPPED_ENERGY, 1)[0]
+
         if(energy){
           creep.moveByHeart(energy);
           creep.pickup(energy);
