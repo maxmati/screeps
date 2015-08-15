@@ -79,13 +79,13 @@ module.exports = {
   getClosestRepair: function (creep) {
     return creep.pos.findClosest(FIND_MY_STRUCTURES, {filter: function (struct) {
       if(struct.structureType === STRUCTURE_RAMPART)
-        return struct.hits < 50000/2;
+        return struct.hits < 5000/2;
       return struct.hits < struct.hitsMax / 2;
     }})
   },
   structIsFull: function (struct) {
     if(struct.structureType === STRUCTURE_RAMPART)
-      return struct.hits >= 50000;
+      return struct.hits >= 5000;
     return struct.hits >= struct.hitsMax;
   }
 }

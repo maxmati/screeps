@@ -46,7 +46,7 @@ module.exports = {
 
       if(creep.memory.state == "grab") {
         if(!creep.memory.workingAt){
-          creep.memory.workingAt = util.getLeastOccupiedSource("miner", creep.room);
+          creep.memory.workingAt = util.getLeastOccupiedSource("carrier", creep.room);
         }
         var source = Game.getObjectById(creep.memory.workingAt);
         var energy = source.pos.findInRange(FIND_DROPPED_ENERGY, 1)[0]
@@ -128,6 +128,7 @@ module.exports = {
   },
   repairer: {
     amount: function () {
+      if(Memory.stage >= 7) return 3;
       if(Memory.stage >= 7) return 2;
       return 0;
     },
