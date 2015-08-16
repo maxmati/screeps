@@ -38,6 +38,12 @@ module.exports = {
     } else if(creep.memory.state == "build") {
 
       var target = Game.getObjectById(creep.memory.workingAt);
+
+      if(target && util.structIsFull){
+        target = null;
+        creep.memory.workingAt = null;
+      }
+
       if(!target){
         var target = findTarget(creep);
         if(target)

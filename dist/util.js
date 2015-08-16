@@ -39,11 +39,11 @@ module.exports = {
 
      return minKey;
    },
-   notFullSpawn: function (room) {
-     var extensions = room.find(FIND_MY_STRUCTURES,	{filter: function (struct) {
+   notFullSpawn: function (creep) {
+     var extension = creep.pos.findClosest(FIND_MY_STRUCTURES,	{filter: function (struct) {
        return struct.structureType === STRUCTURE_EXTENSION && struct.energy < struct.energyCapacity;
      }});
-     if(extensions.length) return extensions[0];
+     if(extension) return extension;
 
      var spawns = _.filter(Game.spawns, function (spawn) {
           return spawn.energy < spawn.energyCapacity;

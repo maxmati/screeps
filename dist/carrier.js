@@ -30,7 +30,21 @@ module.exports = {
       if(creep.carry.energy >= creep.carryCapacity)
         creep.memory.state = "put";
     } else if (creep.memory.state == "put") {
-      var spawn = util.notFullSpawn(creep.room);
+      var target = Game.getObjectById(creep.memory.currentSpawn);
+
+      if(target && target.energy >= target.energyCapacity){
+        target = null;
+        creep.memory.currentSpawn = null;
+      }
+
+      if(!target){
+        target = util.notFullSpawn(creep);
+        if(target)
+          creep.memory.currentSpawn = target.id;
+      }
+
+      var spawn = target;
+      // var spawn = util.notFullSpawn(creep.room);
       if(spawn){
         creep.moveByHeart(spawn);
         creep.transferEnergy(spawn)
