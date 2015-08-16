@@ -30,7 +30,9 @@ module.exports = function() {
         if(!creep.memory) continue
 
         if (creep.memory.role) {
-            roles[creep.memory.role].action(creep);
+          var role = roles[creep.memory.role];
+          if(role)
+            role.action(creep);
         } else console.log("Creep " + creepName + " is not assigned to any role!");
 
         if(creep.memory.ticksToLivenumber <= 1)

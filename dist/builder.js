@@ -1,8 +1,18 @@
 var util = require("util");
+function findTarget(creep) {
+  var target = util.getClosestRepair(creep);
+  if(target)
+    return target;
 
+  target = creep.pos.findClosest(FIND_CONSTRUCTION_SITES);
+  if(target)
+    return target;
+
+  return null;
+}
 module.exports = {
   amount: function () {
-    if(Memory.stage >= 8) return 1;
+    if(Memory.stage >= 8) return 3;
     if(Memory.stage >= 6) return 4;
     if(Memory.stage >= 5) return 1;
     if(Memory.stage >= 4) return 4;
@@ -29,8 +39,7 @@ module.exports = {
 
       var target = Game.getObjectById(creep.memory.workingAt);
       if(!target){
-        creep.memory.path = null;
-        var target = creep.pos.findClosest(FIND_CONSTRUCTION_SITES);
+        var target = findTarget(creep);
         if(target)
           creep.memory.workingAt = target.id;
       }
@@ -39,7 +48,8 @@ module.exports = {
 
         creep.moveByHeart(target);
 
-        creep.build(target)
+        if(creep.repair(target) === ERR_INVALID_TARGET)
+          creep.build(target)
       }else {
         util.flag(creep);
       }
